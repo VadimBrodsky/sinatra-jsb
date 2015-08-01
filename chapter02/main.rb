@@ -17,3 +17,6 @@ get '/contact' do
 	#erb :contact, :layout => :special
 end
 
+not_found do
+	erb :not_found
+end
