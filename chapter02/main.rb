@@ -1,25 +1,26 @@
 require 'sinatra'
 require 'sinatra/reloader' if development?
+require 'slim'
 
 set :public_folder, 'assets' # public by default
 set :views, 'templates'      # views by default
 
 get '/' do
-	erb :home
+	slim :home
 end
 
 get '/about' do
 	@title = "All About This Website"
-	erb :about
+	slim :about
 end
 
 get '/contact' do
-	erb :contact
-	#erb :contact, :layout => :special
+	slim :contact
+	#slim :contact, :layout => :special
 end
 
 not_found do
-	erb :not_found
+	slim :not_found
 end
 
 get '/fake-error' do
