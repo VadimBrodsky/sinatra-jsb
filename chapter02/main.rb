@@ -11,6 +11,7 @@ end
 
 get '/contact' do
 	erb :contact
+	#erb :contact, :layout => :special
 end
 
 __END__
