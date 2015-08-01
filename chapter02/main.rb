@@ -20,3 +20,8 @@ end
 not_found do
 	erb :not_found
 end
+
+get '/fake-error' do
+	status 500
+	"There's nothing wrong, really :p"
+end
