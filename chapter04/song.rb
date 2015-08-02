@@ -26,16 +26,21 @@ get '/songs' do
   slim :songs
 end
 
-# Show one song
-get '/songs/:id' do
-  @song = Song.get(params[:id])
-  slim :show_song
-end
-
 # Create a song form
 get '/songs/new' do
+  halt(401, 'Not Authorized') unless session[:admin]
   @song = Song.new
   slim :new_song
+end
+
+# Show one song
+get '/songs/:id' do
+  unless Song.get(params[:id]).nil?
+    @song = Song.get(params[:id])
+    slim :show_song
+  else
+    redirect to('/songs')
+  end
 end
 
 # Create a song POST action
