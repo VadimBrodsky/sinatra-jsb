@@ -46,3 +46,11 @@ get '/environment' do
 		"Something else?"
 	end
 end
+
+get '/set/:name' do
+	session[:name] = params[:name]
+end
+
+get '/get/hello' do
+	"Hello #{session[:name]}"
+end
