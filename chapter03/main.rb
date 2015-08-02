@@ -2,6 +2,8 @@ require 'sinatra'
 require 'sinatra/reloader' if development?
 require 'slim'
 
+require './song'
+
 set :public_folder, 'assets' # public by default
 set :views, 'templates'      # views by default
 
