@@ -4,8 +4,11 @@ require 'slim'
 
 require './song'
 
-set :public_folder, 'assets' # public by default
-set :views, 'templates'      # views by default
+configure do
+	set :public_folder, 'assets' # public by default
+	set :views, 'templates'      # views by default
+	enable :sessions
+end
 
 get ('/styles.css'){ scss :styles }
 
