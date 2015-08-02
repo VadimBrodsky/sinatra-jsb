@@ -5,6 +5,8 @@ require 'slim'
 set :public_folder, 'assets' # public by default
 set :views, 'templates'      # views by default
 
+get ('/styles.css'){ scss :styles }
+
 get '/' do
 	slim :home
 end
