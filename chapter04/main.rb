@@ -8,6 +8,8 @@ configure do
 	set :public_folder, 'assets' # public by default
 	set :views, 'templates'      # views by default
 	enable :sessions
+	set :username, 'frank'
+	set :password, 'sinatra'
 end
 
 get ('/styles.css'){ scss :styles }
@@ -53,4 +55,17 @@ end
 
 get '/get/hello' do
 	"Hello #{session[:name]}"
+end
+
+get '/login' do
+	slim :login
+end
+
+post '/login' do
+	if params[:username] == settings.username && params[:password] == settings.password
+		session[:admin] = true
+		redirect to('/songs')
+	else
+		slim :login
+	end
 end
