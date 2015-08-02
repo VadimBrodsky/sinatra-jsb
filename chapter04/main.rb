@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'sinatra/reloader' if development?
+require 'sinatra/reloader' if settings.development?
 require 'slim'
 
 require './song'
@@ -30,4 +30,16 @@ end
 get '/fake-error' do
 	status 500
 	"There's nothing wrong, really :p"
+end
+
+get '/environment' do
+	if settings.development?
+		"development"
+	elsif settings.production?
+		"production"
+	elsif settings.test?
+		"test"
+	else
+		"Something else?"
+	end
 end
