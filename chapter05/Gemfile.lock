@@ -64,8 +64,13 @@ GEM
     fastercsv (1.5.5)
     json (1.8.3)
     json_pure (1.8.2)
+    mail (2.6.3)
+      mime-types (>= 1.16, < 3)
+    mime-types (2.6.1)
     multi_json (1.11.2)
     pg (0.18.2)
+    pony (1.11)
+      mail (>= 2.0)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
@@ -106,6 +111,7 @@ DEPENDENCIES
   dm-postgres-adapter
   dm-sqlite-adapter
   pg
+  pony
   sass
   sinatra
   sinatra-contrib

@@ -7,6 +7,7 @@ gem 'sinatra-flash'
 gem 'slim'
 gem 'sass'
 gem 'data_mapper'
+gem 'pony'
 
 group :development do
   gem 'sinatra-contrib'
