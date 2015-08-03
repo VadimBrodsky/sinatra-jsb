@@ -20,9 +20,26 @@ end
 
 DataMapper.finalize
 
+module SongHelpers
+  def find_songs
+    @songs = Song.all
+  end
+
+  def find_song
+    Song.get(params[:id])
+  end
+
+  def create_song
+    @song = Song.create(params[:song])
+  end
+end
+
+helpers SongHelpers
+
 # Show all songs
 get '/songs' do
-  @songs = Song.all
+  # @songs = Song.all
+  find_songs
   slim :songs
 end
 
@@ -36,34 +53,34 @@ end
 # Show one song
 get '/songs/:id' do
   unless Song.get(params[:id]).nil?
-    @song = Song.get(params[:id])
+    @song = find_song
     slim :show_song
   else
     redirect to('/songs')
   end
 end
 
-# Create a song POST action
-post '/songs' do
-  song = Song.create(params[:song])
-  redirect to("/songs/#{song.id}")
-end
-
 # Edit a song form
 get '/songs/:id/edit' do
-  @song = Song.get(params[:id])
+  @song = find_song
   slim :edit_song
+end
+
+# Create a song POST action
+post '/songs' do
+  create_song
+  redirect to("/songs/#{song.id}")
 end
 
 # Edit a song PUT action
 put '/songs/:id' do
-  song = Song.get(params[:id])
+  song = find_song
   song.update(params[:song])
   redirect to("/songs/#{song.id}")
 end
 
 # Delete a song DELETE action
 delete '/songs/:id' do
-  Song.get(params[:id]).destroy
+  find_song.destroy
   redirect to('/songs')
 end
