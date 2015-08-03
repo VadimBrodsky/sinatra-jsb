@@ -54,3 +54,7 @@ p {
 label {
   display: block;
 }
+
+nav a.current {
+  background: lighten($black, 5%);
+}

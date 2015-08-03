@@ -18,6 +18,10 @@ helpers do
 			"<link href=\"#{stylsheet}.css\" media=\"screen, projection\" rel=\"stylsheet\" />"
 		end.join
 	end
+
+	def current?(path='/')
+		(request.path == path || request.path == path + '/') ? "current" : nil
+	end
 end
 
 get ('/styles.css'){ scss :styles }
