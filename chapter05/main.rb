@@ -22,6 +22,21 @@ helpers do
 	def current?(path='/')
 		(request.path == path || request.path == path + '/') ? "current" : nil
 	end
+
+	def set_title
+		@title ||= "Songs By Sinatra"
+	end
+end
+
+# before filter - will run before each request
+# there are also after filters in sinatra
+# can be applied globally or to a specific route
+before do
+	set_title
+end
+
+after '/special' do
+	# something that happens only after the special route was invoked
 end
 
 get ('/styles.css'){ scss :styles }
