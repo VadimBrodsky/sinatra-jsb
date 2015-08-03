@@ -3,6 +3,7 @@ source "https://rubygems.org"
 
 gem 'thin'
 gem 'sinatra'
+gem 'sinatra-flash'
 gem 'slim'
 gem 'sass'
 gem 'data_mapper'
