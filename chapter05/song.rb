@@ -45,7 +45,7 @@ end
 
 # Create a song form
 get '/songs/new' do
-  halt(401, 'Not Authorized') unless session[:admin]
+  protected!
   @song = Song.new
   slim :new_song
 end

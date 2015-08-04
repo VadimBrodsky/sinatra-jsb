@@ -1,4 +1,5 @@
 require 'sinatra'
+require './sinatra/auth'   # custom authorization extension
 require 'sinatra/reloader' if settings.development?
 require 'sinatra/flash'
 require 'slim'
@@ -10,8 +11,8 @@ configure do
 	set :public_folder, 'assets' # public by default
 	set :views, 'templates'      # views by default
 	enable :sessions
-	set :username, 'frank'
-	set :password, 'sinatra'
+	set :username, 'admin'
+	set :password, 'password'
 end
 
 helpers do
@@ -114,16 +115,16 @@ get '/login' do
 	slim :login
 end
 
-post '/login' do
-	if params[:username] == settings.username && params[:password] == settings.password
-		session[:admin] = true
-		redirect to('/songs')
-	else
-		slim :login
-	end
-end
+# post '/login' do
+# 	if params[:username] == settings.username && params[:password] == settings.password
+# 		session[:admin] = true
+# 		redirect to('/songs')
+# 	else
+# 		slim :login
+# 	end
+# end
 
-get '/logout' do
-	session.clear
-	redirect to('/login')
-end
+# get '/logout' do
+# 	session.clear
+# 	redirect to('/login')
+# end
