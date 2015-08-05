@@ -1,0 +1,19 @@
+doctype html
+html lang="en"
+  head
+    title== @title
+    meta charset="utf-8"
+    link rel="stylesheet" href="/styles.css"
+    / == css :styles
+  body
+    header
+      h1 Songs By Sinatra
+      == slim :nav
+    section
+      == styled_flash
+      == yield
+    footer
+      - if authorized?
+        a href="/logout" log out
+      - else
+        a href="/login" log in
