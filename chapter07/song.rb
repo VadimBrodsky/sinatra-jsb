@@ -5,7 +5,7 @@ require 'slim'
 require 'sass'
 require 'sinatra/flash'
 require './sinatra/auth'   # custom authorization extension
-require 'sinatra/reloader' if settings.development?
+# require 'sinatra/reloader' if settings.development?
 
 class Song
   include DataMapper::Resource
@@ -45,6 +45,8 @@ class SongController < Sinatra::Base
   helpers SongHelpers
 
   configure do
+		set :public_folder, 'assets' # public by default
+		set :views, 'templates'      # views by default
 		enable :sessions
 		set :username, 'admin'
 		set :password, 'password'
@@ -95,7 +97,7 @@ class SongController < Sinatra::Base
       @song = find_song
       slim :show_song
     else
-      redirect to('/songs')
+      redirect to('/')
     end
   end
 
@@ -110,7 +112,7 @@ class SongController < Sinatra::Base
   post '/' do
     protected!
     flash[:notice] = "Song successfully added" if create_song
-    redirect to("/songs/#{@song.id}")
+    redirect to("/#{@song.id}")
   end
 
   # Edit a song PUT action
@@ -119,22 +121,22 @@ class SongController < Sinatra::Base
     if song.update(params[:song])
       flash[:notice] = 'Song successfully updated'
     end
-    redirect to("/songs/#{song.id}")
+    redirect to("/#{song.id}")
   end
 
   # Delete a song DELETE action
-  delete '/id' do
+  delete '/:id' do
     if find_song.destroy
       flash[:notice] = "Song deleted"
     end
-    redirect to('/songs')
+    redirect to('/')
   end
 
-  post '/id/like' do
+  post '/:id/like' do
     @song = find_song
     @song.likes = @song.likes.next
     @song.save
-    redirect to "/songs/#{@song.id}" unless request.xhr?
+    redirect to "/#{@song.id}" unless request.xhr?
     slim :like, :layout => false
   end
 end

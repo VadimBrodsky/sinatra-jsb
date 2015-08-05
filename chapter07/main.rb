@@ -1,6 +1,6 @@
 require 'sinatra/base'
 require './sinatra/auth'   # custom authorization extension
-require 'sinatra/reloader' if settings.development?
+# require 'sinatra/reloader' if settings.development?
 require 'sinatra/flash'
 require 'slim'
 require 'sass'
