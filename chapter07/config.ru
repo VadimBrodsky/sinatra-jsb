@@ -1,6 +1,5 @@
 require 'sinatra/base'
-require './main'
-require './song'
+require './app'
 
 map('/songs') { run SongController }
 map('/') { run Website }
