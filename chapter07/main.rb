@@ -3,12 +3,13 @@ require './sinatra/auth'   # custom authorization extension
 require 'sinatra/reloader' if settings.development?
 require 'sinatra/flash'
 require 'slim'
+require 'sass'
 require 'pony'
 require 'coffee-script'
 
 class Website < Sinatra::Base
 	register Sinatra::Auth
-	reguster Sinatra::Flash
+	register Sinatra::Flash
 
 	configure do
 		set :public_folder, 'assets' # public by default
