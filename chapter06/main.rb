@@ -4,6 +4,7 @@ require 'sinatra/reloader' if settings.development?
 require 'sinatra/flash'
 require 'slim'
 require 'pony'
+require 'coffee-script'
 
 require './song'
 
@@ -61,6 +62,7 @@ after '/special' do
 end
 
 get ('/styles.css'){ scss :styles }
+get ('/javascripts/application.js') { coffee :application }
 
 get '/' do
 	slim :home
