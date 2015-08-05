@@ -1,4 +1,4 @@
-require 'sinatra'
+require 'sinatra/base'
 require './sinatra/auth'   # custom authorization extension
 require 'sinatra/reloader' if settings.development?
 require 'sinatra/flash'
@@ -6,17 +6,36 @@ require 'slim'
 require 'pony'
 require 'coffee-script'
 
-require './song'
+class Website < Sinatra::Base
+	register Sinatra::Auth
+	reguster Sinatra::Flash
 
-configure do
-	set :public_folder, 'assets' # public by default
-	set :views, 'templates'      # views by default
-	enable :sessions
-	set :username, 'admin'
-	set :password, 'password'
-end
+	configure do
+		set :public_folder, 'assets' # public by default
+		set :views, 'templates'      # views by default
+		enable :sessions
+		set :username, 'admin'
+		set :password, 'password'
+	end
 
-helpers do
+	configure :development do
+		set :email_address => 'smtp.gmail.com',
+				:email_user_name => 'Username',
+				:email_password => 'secret',
+				:email_domain => 'locahost.localdomain'
+	end
+
+	configure :production do
+		set :email_address => 'smtp.sendgrid.net',
+      :email_user_name => ENV['SENDGRID_USERNAME'],
+      :email_password => ENV['SENDGRID_PASSWORD'],
+      :email_domain => 'heroku.com'
+	end
+
+	before do
+		set_title
+	end
+
 	def css(*stylesheets)
 		stylesheets.map do |stylsheet|
 			"<link href=\"#{stylsheet}.css\" media=\"screen, projection\" rel=\"stylsheet\" />"
@@ -48,85 +67,60 @@ helpers do
 			:domain               => 'localhost.localdomain'
 		})
 	end
-end
 
-# before filter - will run before each request
-# there are also after filters in sinatra
-# can be applied globally or to a specific route
-before do
-	set_title
-end
+	get ('/styles.css'){ scss :styles }
+	get ('/javascripts/application.js') { coffee :application }
 
-after '/special' do
-	# something that happens only after the special route was invoked
-end
+	get '/' do
+		slim :home
+	end
 
-get ('/styles.css'){ scss :styles }
-get ('/javascripts/application.js') { coffee :application }
+	get '/about' do
+		@title = "All About This Website"
+		slim :about
+	end
 
-get '/' do
-	slim :home
-end
+	get '/contact' do
+		slim :contact
+		#slim :contact, :layout => :special
+	end
 
-get '/about' do
-	@title = "All About This Website"
-	slim :about
-end
+	post '/contact' do
+		send_message
+		flash[:notice] = "Thank you for your message. We'll be in touch soon."
+		redirect to('/')
+	end
 
-get '/contact' do
-	slim :contact
-	#slim :contact, :layout => :special
-end
+	not_found do
+		slim :not_found
+	end
 
-post '/contact' do
-	send_message
-	flash[:notice] = "Thank you for your message. We'll be in touch soon."
-	redirect to('/')
-end
+	get '/fake-error' do
+		status 500
+		"There's nothing wrong, really :p"
+	end
 
-not_found do
-	slim :not_found
-end
+	get '/environment' do
+		if settings.development?
+			"development"
+		elsif settings.production?
+			"production"
+		elsif settings.test?
+			"test"
+		else
+			"Something else?"
+		end
+	end
 
-get '/fake-error' do
-	status 500
-	"There's nothing wrong, really :p"
-end
+	get '/set/:name' do
+		session[:name] = params[:name]
+	end
 
-get '/environment' do
-	if settings.development?
-		"development"
-	elsif settings.production?
-		"production"
-	elsif settings.test?
-		"test"
-	else
-		"Something else?"
+	get '/get/hello' do
+		"Hello #{session[:name]}"
+	end
+
+	get '/login' do
+		slim :login
 	end
 end
-
-get '/set/:name' do
-	session[:name] = params[:name]
-end
-
-get '/get/hello' do
-	"Hello #{session[:name]}"
-end
-
-get '/login' do
-	slim :login
-end
-
-# post '/login' do
-# 	if params[:username] == settings.username && params[:password] == settings.password
-# 		session[:admin] = true
-# 		redirect to('/songs')
-# 	else
-# 		slim :login
-# 	end
-# end
-
-# get '/logout' do
-# 	session.clear
-# 	redirect to('/login')
-# end
