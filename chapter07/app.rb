@@ -11,8 +11,15 @@ class ApplicationController < Sinatra::Base
 	register Sinatra::Auth
 	register Sinatra::Flash
 
+  configure do
+    set :start_time, Time.now
+  end
+
 	before do
 		set_title
+    last_modified settings.start_time
+    etag settings.start_time.to_s
+    cache_control :public, :must_revalidate
 	end
 
 	def css(*stylesheets)

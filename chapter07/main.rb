@@ -1,7 +1,7 @@
 require_relative 'app'
 require_relative 'asset-handler'
 
-class Website < ApplicationController
+class WebsiteController < ApplicationController
 	use AssetHandler
 
 	configure do
