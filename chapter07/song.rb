@@ -1,6 +1,6 @@
 require 'dm-core'
 require 'dm-migrations'
-require './app'
+require_relative 'app'
 
 class Song
   include DataMapper::Resource

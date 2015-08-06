@@ -1,4 +1,8 @@
+require_relative 'app'
+require_relative 'asset-handler'
+
 class Website < ApplicationController
+	use AssetHandler
 
 	configure do
 		set :public_folder, 'assets' # public by default
@@ -40,8 +44,8 @@ class Website < ApplicationController
 		})
 	end
 
-	get ('/styles.css'){ scss :styles }
-	get ('/javascripts/application.js') { coffee :application }
+	# get ('/styles.css'){ scss :styles }
+	# get ('/javascripts/application.js') { coffee :application }
 
 	get '/' do
 		slim :home
